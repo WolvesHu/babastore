@@ -2,6 +2,8 @@ package com.wolves.demo.controller;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,6 +12,7 @@ import com.wolves.demo.service.TestTbService;
 
 @Controller
 public class TestTbController {
+	@Resource
 	private TestTbService testTbService;
 	@RequestMapping("/index.do")
 	public String index() {
@@ -19,6 +22,6 @@ public class TestTbController {
 		tb.setBirthday(new Date());
 		tb.setName("梁陈燕");
 		testTbService.addTestTb(tb);
-		return "/index.jsp";
+		return "/index";
 	}
 }

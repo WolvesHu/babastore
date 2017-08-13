@@ -28,6 +28,7 @@
 	  <dubbo:protocol accesslog="true" name="dubbo" port="20880" />
 	<!-- 4、声明需要暴露的服务接口 -->
 	<dubbo:service interface="com.wolves.demo.service.TestTbService" ref="testTbService"/>
-	 <!--5、和本地bean一样实现服务 -->
+	 <!--5、和本地bean一样实现服务        注解，不需要下面的配置
 	<bean id="testTbService" class="com.wolves.demo.service.impl.TestTbServiceImpl" />
+	-->
 </beans>
