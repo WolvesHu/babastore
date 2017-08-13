@@ -25,5 +25,13 @@
 			<property name="prefix" value="/WEB-INF/back_page/"/>
 			<property name="suffix" value=".jsp"/>
 		</bean>
+		<bean id="propertyConfigurer"
+		    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		    <property name="locations">
+		      <list>
+		        <value>classpath:log4j.properties</value>
+		      </list>
+		    </property>
+		</bean>
 		<import resource="dubbo-consumer.xml"/>
 </beans>

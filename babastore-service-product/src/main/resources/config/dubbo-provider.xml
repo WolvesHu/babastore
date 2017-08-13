@@ -21,24 +21,13 @@
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<!-- Dubbo提供方 -->
 	<!-- 1、名称  计算机区别唯一 -->
-	<dubbo:application name="babastore-service-product" logger=""/>
+	<dubbo:application name="babastore-service-product"/>
 	<!-- 2、设置注册中心 地址 -->
-	<dubbo:registry address="118.184.56.80:2181" protocol="zookeeper" />
+	 <dubbo:registry protocol="zookeeper" address="118.184.56.80:2181" />
 	<!-- 3、端口号默认20880 设置端口号-->
-	<dubbo:protocol port="20880" name="dubbo"/>
-	<!-- 4、暴露 实现类-->
+	  <dubbo:protocol accesslog="true" name="dubbo" port="20880" />
+	<!-- 4、声明需要暴露的服务接口 -->
 	<dubbo:service interface="com.wolves.demo.service.TestTbService" ref="testTbService"/>
-	
-	<appender name="dubboAppender" class="org.apache.log4j.DailyRollingFileAppender">   
-        <param name="File" value="E:/dubbo.log" />    
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />    
-        <layout class="org.apache.log4j.PatternLayout">   
-        	<param name="ConversionPattern" value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n" />   
-        </layout>    
-	</appender>   
-	<logger name="com.alibaba.dubbo" additivity="false">   
-	        <priority value ="info"/>    
-	        <appender-ref ref="dubboAppender" />    
-	</logger> 
-	
+	 <!--5、和本地bean一样实现服务 -->
+	<bean id="testTbService" class="com.wolves.demo.service.impl.TestTbServiceImpl" />
 </beans>
