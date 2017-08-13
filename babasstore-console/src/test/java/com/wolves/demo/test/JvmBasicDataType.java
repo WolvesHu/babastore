@@ -1,9 +1,6 @@
 package com.wolves.demo.test;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.sun.tools.javac.util.ByteBuffer;
 
 public class JvmBasicDataType {
 	

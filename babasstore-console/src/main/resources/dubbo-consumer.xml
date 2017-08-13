@@ -25,17 +25,8 @@
 	<dubbo:application name="babastore-console"/>
 	<!-- 2、设置注册中心 地址 -->
 	<dubbo:registry address="118.184.56.80:2181" protocol="zookeeper" />
-	<!-- 调用对应的接口 -->
+	<!-- 调用对应的接口	 -->
 	<dubbo:reference interface="com.wolves.demo.service.TestTbService" id="testTbService" />	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	<dubbo:reference interface="com.wolves.demo.service.BrandService" id="brandService"/>
+	<dubbo:consumer timeout="600000" />
 </beans>

@@ -31,4 +31,6 @@
 	 <!--5、和本地bean一样实现服务        注解，不需要下面的配置
 	<bean id="testTbService" class="com.wolves.demo.service.impl.TestTbServiceImpl" />
 	-->
+	
+	<dubbo:service interface="com.wolves.demo.service.BrandService" ref="brandService"/>
 </beans>

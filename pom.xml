@@ -296,6 +296,8 @@
 				<version>7.0.47</version>
 				<scope>provided</scope>
 			</dependency>
+			
+				 
 		</dependencies>
 	</dependencyManagement>
 	  <build>
