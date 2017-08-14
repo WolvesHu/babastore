@@ -20,7 +20,7 @@ public class TestTbServiceImpl implements TestTbService {
 	@Autowired
 	private TestTbDao testTbDao;
 	public void addTestTb(TestTb testTb){
-		testTbDao.addTestTb(testTb);
+		testTbDao.insertTestTb(testTb);
 	}
 	
 }

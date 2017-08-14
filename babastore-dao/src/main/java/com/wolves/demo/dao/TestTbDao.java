@@ -2,8 +2,15 @@ package com.wolves.demo.dao;
 
 import com.wolves.demo.pojo.TestTb;
 
+/**
+ * æµ‹è¯•
+ * @author lx
+ *
+ */
 public interface TestTbDao {
-//±£´æÊı¾İ
-	public void addTestTb(TestTb testTb);
 
+	
+	//ä¿å­˜
+	public void insertTestTb(TestTb testTb);
+	
 }

@@ -1,68 +1,61 @@
 package com.wolves.demo.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
+import com.wolves.demo.service.product.UploadService;
+import com.wolves.demo.web.Constants;
 
 /**
  * 上传图片
- * 商品
- * 品牌
- * 商品介绍Fck
  * @author lx
  *
  */
 @Controller
 public class UploadController {
-	
+
+	@Autowired
+	private UploadService uploadService;
 	//上传图片
 	@RequestMapping(value = "/upload/uploadPic.do")
-	public void uploadPic(@RequestParam(required = false) MultipartFile pic,HttpServletResponse response){
-		//扩展名
-//		String ext = FilenameUtils.getExtension(pic.getOriginalFilename());
+	public void uploadPic(@RequestParam(required = false) MultipartFile pic
+			,HttpServletResponse response) throws IOException{
 		
-		//图片名称生成策略
-//		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		//图片名称一部分
-//		String format = df.format(new Date());
+		String path = uploadService.uploadPic(pic.getBytes(), pic.getOriginalFilename(), pic.getSize());
 		
-		//随机三位数
-//		Random r = new Random();
-		// n 1000   0-999   99
-		for(int i=0 ; i<3 ;i++){
-//			format += r.nextInt(10);
-		}
+		String url = Constants.IMG_URL + path;
 		
-		//实例化一个Jersey
-//		Client client = new Client();
-//		//保存数据库
-//		String path = "upload/" + format + "." + ext;
-//		
-//		//另一台服务器的请求路径是?
-//		String url = Constants.IMAGE_URL  + path;
-//		//设置请求路径
-//		WebResource resource = client.resource(url);
-//		
-//		//发送开始  POST  GET   PUT
-//		try {
-//			resource.put(String.class, pic.getBytes());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-		//返回二个路径
-//		JSONObject jo = new JSONObject();
-//		jo.put("url", url);
-//		jo.put("path",path);
+		JSONObject  jo = new JSONObject();
+		jo.put("url", url);
+		 
+		response.setContentType("application/json;charset=UTF-8");
+		response.getWriter().write(jo.toString());
 		
-//		ResponseUtils.renderJson(response, jo.toString());
 	}
-
+	//上传多张图片
+	@RequestMapping(value = "/upload/uploadPics.do")
+	public @ResponseBody
+	List<String> uploadPics(@RequestParam(required = false) MultipartFile[] pics
+			,HttpServletResponse response) throws IOException{
+		
+		List<String> urls = new ArrayList<String>();
+		
+		for (MultipartFile pic : pics) {
+			String path = uploadService.uploadPic(pic.getBytes(), pic.getOriginalFilename(), pic.getSize());
+			String url = Constants.IMG_URL + path;
+			urls.add(url);
+		}
+		return urls;
+	}
 }

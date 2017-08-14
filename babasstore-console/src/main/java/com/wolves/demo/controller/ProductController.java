@@ -1,37 +1,64 @@
 package com.wolves.demo.controller;
 
-import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.wolves.demo.pojo.product.Brand;
+import com.wolves.demo.pojo.product.Color;
+import com.wolves.demo.service.product.BrandService;
+import com.wolves.demo.service.product.ProductService;
+
+import cn.itcast.common.page.Pagination;
+
 /**
- * 后台管理
- * 测试
+ * 商品管理
+ * 列表
+ * 添加
+ * 上架
  * @author lx
  *
  */
 @Controller
 public class ProductController {
-	
-	//每一个Springmvc
-	@RequestMapping(value = "/test/springmvc.do")
-	public String test(String name,Date birthday){
-		
-		
-		System.out.println();
-		return "";
-	}
 
-/*	@InitBinder
-	public void initBinder(WebDataBinder binder, WebRequest request) {
-		//转换日期格式
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-		
-	}
-	*/
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private BrandService brandService;
 	
-
+	//查询
+	@RequestMapping(value = "/product/list.do")
+	public String list(Integer pageNo,String name,Long brandId,Boolean isShow,Model model){
+		//品牌的结果集
+		List<Brand> brands = brandService.selectBrandListByQuery(1);
+		model.addAttribute("brands", brands);
+		
+		Pagination pagination = productService.selectPaginationByQuery(pageNo, name, brandId, isShow);
+		
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("name", name);
+		model.addAttribute("brandId", brandId);
+		if(null != isShow){
+			model.addAttribute("isShow", isShow);
+		}else{
+			model.addAttribute("isShow", false);
+		}
+		return "product/list";
+	}
+	
+	//去商品添加页面
+	@RequestMapping(value = "/product/toAdd.do")
+	public String toAdd(Model model){
+		//品牌的结果集
+		List<Brand> brands = brandService.selectBrandListByQuery(1);
+		model.addAttribute("brands", brands);
+		
+		List<Color> colors = productService.selectColorList();
+		model.addAttribute("colors", colors);
+		return "product/add";
+	}
 }

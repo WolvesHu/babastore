@@ -1,13 +1,11 @@
 package com.wolves.demo.controller;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 后台管理
- * 测试
  * @author lx
  *
  */
@@ -15,50 +13,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/control")
 public class CenterController {
 	
-	//每一个Springmvc
-	@RequestMapping(value = "/test/springmvc.do")
-	public String test(String name,Date birthday){
-		
-		
-		System.out.println();
-		return "";
-	}
-
-/*	@InitBinder
-	public void initBinder(WebDataBinder binder, WebRequest request) {
-		//转换日期格式
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-		
-	}
-	*/
-	
-	//跳转入口页面
+	//入口
 	@RequestMapping(value = "/index.do")
-	public String index(){
+	public String index(Model model){
+
 		return "index";
 	}
-	//跳转头页面
+	//头
 	@RequestMapping(value = "/top.do")
-	public String top(){
+	public String top(Model model){
+		
 		return "top";
 	}
-	//跳转身体页面
+	//身体
 	@RequestMapping(value = "/main.do")
-	public String main(){
+	public String main(Model model){
+		
 		return "main";
 	}
-	//跳转左页面
+	//身体--左
 	@RequestMapping(value = "/left.do")
-	public String left(){
+	public String left(Model model){
+		
 		return "left";
 	}
-	//跳转右页面
+	//身体-右
 	@RequestMapping(value = "/right.do")
-	public String right(){
+	public String right(Model model){
+		
 		return "right";
 	}
+	//商品身体-
+	@RequestMapping(value = "/frame/product_main.do")
+	public String product_main(Model model){
+		
+		return "frame/product_main";
+	}
+	@RequestMapping(value = "/frame/product_left.do")
+	public String product_left(Model model){
+		
+		return "frame/product_left";
+	}
 	
-
+	
 }

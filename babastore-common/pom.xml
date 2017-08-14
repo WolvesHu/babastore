@@ -136,7 +136,7 @@
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>
-<dependency>
+		<dependency>
 			<groupId>net.fckeditor</groupId>
 			<artifactId>java-core</artifactId>
 		</dependency>
@@ -145,13 +145,12 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 		</dependency>
-
 		<!--page -->
-<!-- 		<dependency>
+		<dependency>
 			<groupId>com.babasport</groupId>
 			<artifactId>page</artifactId>
 		</dependency>
- -->		<!-- solrJ -->
+		<!-- solrJ -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
@@ -164,11 +163,10 @@
 		</dependency>
 
 		<!-- FastDFS client -->
-
-		<!-- <dependency>
-			<groupId>com.github.tobato</groupId>
-			<artifactId>fastdfs_client</artifactId>
-		</dependency> -->
+		<dependency>
+		    <groupId>fastdfs_client</groupId>
+		    <artifactId>fastdfs_client</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.netty</groupId>
