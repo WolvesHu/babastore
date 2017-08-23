@@ -19,10 +19,10 @@
    		http://www.springframework.org/schema/task/spring-task-4.0.xsd
 		http://code.alibabatech.com/schema/dubbo        
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-		<context:component-scan base-package="com.wolves.demo"/>
+		<context:component-scan base-package="com.wolves.demo.controller"/>
 		<mvc:annotation-driven/>
 		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-			<property name="prefix" value="/WEB-INF/back_page/"/>
+			<property name="prefix" value="/WEB-INF/weibo/"/>
 			<property name="suffix" value=".jsp"/>
 		</bean>
 		<bean id="propertyConfigurer"

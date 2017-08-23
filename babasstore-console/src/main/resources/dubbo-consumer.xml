@@ -24,9 +24,9 @@
 	<!-- 1、名称  计算机区别唯一 -->
 	<dubbo:application name="babastore-console"/>
 	<!-- 2、设置注册中心 地址 -->
-	<dubbo:registry address="118.184.56.80:2181" protocol="zookeeper" />
-	<!-- 调用对应的接口	 -->
-	<dubbo:reference interface="com.wolves.demo.service.TestTbService" id="testTbService" />	
+	<dubbo:registry address="192.168.244.129:2181" protocol="zookeeper" />
+	<!-- 调用对应的接口	
+	<dubbo:reference interface="com.wolves.demo.service.TestTbService" id="testTbService" />	 -->
 	<dubbo:reference interface="com.wolves.demo.service.product.UploadService" id="uploadService"/>
 	<dubbo:reference interface="com.wolves.demo.service.product.ProductService" id="productService"/>
 	<dubbo:reference interface="com.wolves.demo.service.product.BrandService" id="brandService"/>

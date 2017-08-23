@@ -11,8 +11,7 @@ public interface ProductService {
 	
 	
 	//分页对象
-	public Pagination selectPaginationByQuery(Integer pageNo,String name
-			,Long brandId,Boolean isShow);
+	public Pagination selectPaginationByQuery(Integer pageNo,String name ,Long brandId,Boolean isShow);
 	
 	//颜色结果集
 	public List<Color> selectColorList();

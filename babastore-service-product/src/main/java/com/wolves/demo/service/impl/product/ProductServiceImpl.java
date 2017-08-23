@@ -1,5 +1,6 @@
 package com.wolves.demo.service.impl.product;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wolves.demo.dao.product.ColorDao;
 import com.wolves.demo.dao.product.ProductDao;
+import com.wolves.demo.dao.product.SkuDao;
 import com.wolves.demo.pojo.product.Color;
 import com.wolves.demo.pojo.product.ColorQuery;
+import com.wolves.demo.pojo.product.Product;
 import com.wolves.demo.pojo.product.ProductQuery;
 import com.wolves.demo.pojo.product.ProductQuery.Criteria;
+import com.wolves.demo.pojo.product.Sku;
 import com.wolves.demo.service.product.ProductService;
 
 import cn.itcast.common.page.Pagination;
+import redis.clients.jedis.Jedis;
 
 /**
  * 商品
@@ -27,7 +32,10 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	private ProductDao productDao;
-	
+	//@Autowired
+	private SkuDao skuDao;
+	@Autowired
+	private Jedis jedis;
 	//分页对象
 	public Pagination selectPaginationByQuery(Integer pageNo,String name
 			,Long brandId,Boolean isShow){
@@ -35,7 +43,7 @@ public class ProductServiceImpl implements ProductService{
 		productQuery.setPageNo(Pagination.cpn(pageNo));
 		//排序
 		productQuery.setOrderByClause("id desc");
-		//productQuery.s
+//		productQuery.s
 		Criteria createCriteria = productQuery.createCriteria();
 		StringBuilder params = new StringBuilder();
 		if(null != name){
@@ -74,5 +82,61 @@ public class ProductServiceImpl implements ProductService{
 		ColorQuery colorQuery = new ColorQuery();
 		colorQuery.createCriteria().andParentIdNotEqualTo(0L);
 		return colorDao.selectByExample(colorQuery);
+	}
+	
+	
+	//商品保存
+	public void insertProduct(Product product){
+		//保存商品  
+		Long id = jedis.incr("pno");
+		product.setId(id);
+		//下架状态 后台程序写的
+		product.setIsShow(false);
+		//删除  后台程序写的不删除
+		product.setIsDel(true);
+		productDao.insertSelective(product);
+		//返回ID
+		//保存SKU
+		String[] colors = product.getColors().split(",");
+		String[] sizes = product.getSizes().split(",");
+		//颜色
+		for (String color : colors) {
+			for (String size : sizes) {
+				//保存SKU
+				Sku sku = new Sku();
+				//商品ＩＤ
+				sku.setProductId(product.getId());
+				//颜色
+				sku.setColorId(Long.parseLong(color));
+				//尺码
+				sku.setSize(size);
+				//市场价
+				sku.setMarketPrice(999f);
+				//售价
+				sku.setPrice(666f);
+				//运费
+				sku.setDeliveFee(8f);
+				//库存
+				sku.setStock(0);
+				//限制
+				sku.setUpperLimit(200);
+				//时间
+				sku.setCreateTime(new Date());
+				skuDao.insertSelective(sku);
+			}
+		}
+	}
+	//上架
+	public void isShow(Long[] ids){
+		Product product = new Product();
+		//上架
+		product.setIsShow(true);
+		for (Long id : ids) {
+			product.setId(id);
+			//商品状态的变更
+			productDao.updateByPrimaryKeySelective(product);
+			//TODO 保存商品信息到SOlr服务器
+			//TODO 静态化
+		}
 	}
 }

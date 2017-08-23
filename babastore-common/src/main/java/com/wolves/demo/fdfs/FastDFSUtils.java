@@ -25,7 +25,7 @@ public class FastDFSUtils {
 			//老大客户端
 			TrackerClient trackerClient = new TrackerClient();
 			TrackerServer trackerServer = trackerClient.getConnection();
-			StorageServer storageServer  = null;
+			StorageServer storageServer  = trackerClient.getStoreStorage(trackerServer);
 			StorageClient1 storageClient1 = new StorageClient1(trackerServer, storageServer);
 			String ext = FilenameUtils.getExtension(name);
 			
