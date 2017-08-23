@@ -10,7 +10,6 @@ import com.wolves.demo.service.product.BrandService;
 
 import cn.itcast.common.page.Pagination;
 
-
 /**
  * 品牌管理
  * 列表

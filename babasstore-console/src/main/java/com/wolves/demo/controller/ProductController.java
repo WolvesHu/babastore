@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.wolves.demo.pojo.product.Brand;
 import com.wolves.demo.pojo.product.Color;
+import com.wolves.demo.pojo.product.Product;
 import com.wolves.demo.service.product.BrandService;
 import com.wolves.demo.service.product.ProductService;
 
@@ -61,4 +62,24 @@ public class ProductController {
 		model.addAttribute("colors", colors);
 		return "product/add";
 	}
+	//商品保存
+	@RequestMapping(value = "/product/add.do")
+	public String add(Product product){
+		productService.insertProduct(product);
+		
+		return "redirect:/product/list.do";
+	}
+	//上架 批量
+	@RequestMapping(value = "/product/isShow.do")
+	public String isShow(Long[] ids){
+		productService.isShow(ids);
+		return "forward:/product/list.do";
+	}
+	@RequestMapping(value = "/type/list.do")
+	public String tlist(){
+		return "type/list";
+	}
+	
+	
+	
 }

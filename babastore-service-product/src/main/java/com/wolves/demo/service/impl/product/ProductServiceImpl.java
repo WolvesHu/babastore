@@ -3,7 +3,13 @@ package com.wolves.demo.service.impl.product;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +38,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	private ProductDao productDao;
-	//@Autowired
-	private SkuDao skuDao;
-	@Autowired
-	private Jedis jedis;
+	
 	//分页对象
 	public Pagination selectPaginationByQuery(Integer pageNo,String name
 			,Long brandId,Boolean isShow){
@@ -43,7 +46,7 @@ public class ProductServiceImpl implements ProductService{
 		productQuery.setPageNo(Pagination.cpn(pageNo));
 		//排序
 		productQuery.setOrderByClause("id desc");
-//		productQuery.s
+		//productQuery.s
 		Criteria createCriteria = productQuery.createCriteria();
 		StringBuilder params = new StringBuilder();
 		if(null != name){
@@ -83,16 +86,18 @@ public class ProductServiceImpl implements ProductService{
 		colorQuery.createCriteria().andParentIdNotEqualTo(0L);
 		return colorDao.selectByExample(colorQuery);
 	}
-	
-	
+	@Autowired
+	private SkuDao skuDao;
+	@Autowired
+	private Jedis jedis;
 	//商品保存
 	public void insertProduct(Product product){
 		//保存商品  
 		Long id = jedis.incr("pno");
 		product.setId(id);
-		//下架状态 后台程序写的
+//		下架状态 后台程序写的
 		product.setIsShow(false);
-		//删除  后台程序写的不删除
+//		删除  后台程序写的不删除
 		product.setIsDel(true);
 		productDao.insertSelective(product);
 		//返回ID
@@ -122,20 +127,35 @@ public class ProductServiceImpl implements ProductService{
 				sku.setUpperLimit(200);
 				//时间
 				sku.setCreateTime(new Date());
+				
 				skuDao.insertSelective(sku);
+				
 			}
 		}
 	}
+	@Autowired
+	private JmsTemplate jmsTemplate;
 	//上架
 	public void isShow(Long[] ids){
 		Product product = new Product();
 		//上架
 		product.setIsShow(true);
-		for (Long id : ids) {
+		for (final Long id : ids) {
 			product.setId(id);
 			//商品状态的变更
 			productDao.updateByPrimaryKeySelective(product);
-			//TODO 保存商品信息到SOlr服务器
+			//发送消息 到ActiveMQ中   brandId
+//			jmsTemplate.send("brandId", messageCreator);
+			jmsTemplate.send(new MessageCreator(){
+
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					// TODO Auto-generated method stub
+					return session.createTextMessage(String.valueOf(id));
+				}
+				
+			});
+			
 			//TODO 静态化
 		}
 	}
